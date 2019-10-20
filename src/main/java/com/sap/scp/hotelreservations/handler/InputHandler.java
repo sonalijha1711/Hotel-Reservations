@@ -26,8 +26,7 @@ public class InputHandler {
             outputIsValid = false;
         }
         if (end > 364) {
-            exceptionMessage
-                    .append("The end date should be " + 364 + " or earlier" + "\n");
+            exceptionMessage.append("The end date should be " + 364 + " or earlier" + "\n");
             outputIsValid = false;
         }
         if (!outputIsValid) {
@@ -37,22 +36,20 @@ public class InputHandler {
     }
 
     /**
-     *
      * @param roomSize
      * @return
      */
     private static boolean validateRoomSize(int roomSize) throws ValidationException {
-        if (roomSize >1000 || roomSize < 1) {
-            throw  new ValidationException("The room size should be value between 1 to 1000");
+        if (roomSize > 1000 || roomSize < 1) {
+            throw new ValidationException("The room size should be value between 1 to 1000");
         }
         return true;
     }
 
     /**
-     *
      * @return instance of HotelBookingService to create booking
      */
-    public static HotelBookingService createHotelService(){
+    public static HotelBookingService createHotelService() {
         Scanner scanner = new Scanner(System.in);
         HotelBookingService bookingService;
         while (true) {
@@ -70,12 +67,12 @@ public class InputHandler {
                     System.out.println("************* Hotel Created !! Welcome to the  Hotel Reservation System ***********\n");
                     break;
                 }
-            }catch (ValidationException ex){
+            } catch (ValidationException ex) {
                 System.out.println(ex.getMessage());
             }
         }
-            return bookingService;
-        }
+        return bookingService;
+    }
 
     /**
      *
@@ -89,37 +86,36 @@ public class InputHandler {
         HotelBookingService bookingService = createHotelService();
         Scanner scanner = new Scanner(System.in);
         String choice = "y";
-       do {
+        do {
             System.out.println("****** Please Enter StartDate, EndDate for Booking  e.g  0 3");
-            try{
-            String[] dates = scanner.nextLine().split(" ");
-            start = Integer.parseInt(dates[0]);
-            end = Integer.parseInt(dates[1]);
-
-           } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
-            System.out.println("Invalid input .Enter the input in this format : start end e.g 0 3");
-            continue;
-        }
             try {
-                if (validateDates(start,end)) {
+                String[] dates = scanner.nextLine().split(" ");
+                start = Integer.parseInt(dates[0]);
+                end = Integer.parseInt(dates[1]);
+
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
+                System.out.println("Invalid input .Enter the input in this format : start end e.g 0 3");
+                continue;
+            }
+            try {
+                if (validateDates(start, end)) {
                     booking = bookingService.createBooking(start, end);
                 }
-            }catch (ValidationException ex){
+            } catch (ValidationException ex) {
                 System.out.println(ex.getMessage());
                 continue;
             }
 
-            if(booking!=null)
-                System.out.println("************* Congratulations: Room Number allocated : "+ booking.getRoomNo()+" ***********");
+            if (booking != null)
+                System.out.println("************* Congratulations: Room Number allocated : " + booking.getRoomNo() + " ***********");
             else
                 System.out.println("****** Sorry !! Room is not available ***********\n");
 
             System.out.println("************* Want to Continue Booking  Y/N ***********");
             choice = scanner.nextLine();
 
-        }while(choice.equalsIgnoreCase("y"));
+        } while (choice.equalsIgnoreCase("y"));
 
     }
-
 
 }
