@@ -1,12 +1,13 @@
 package com.sap.scp.hotelreservations.application;
 
-import com.sap.scp.hotelreservations.handler.InputHandler;
+import com.sap.scp.hotelreservations.manager.ReservationManager;
 
 public class Application {
 
     public static void main(String[] args) {
-        InputHandler.handleInput();
-        System.out.println("*************Thank You for visiting our Hotel ***********\n");
+        ReservationManager reservationManager = new ReservationManager();
+        reservationManager.startReservation();
+        System.out.println("*************Thank You for visiting our Reservation System ***********\n");
 
     }
 }

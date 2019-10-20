@@ -1,26 +1,32 @@
 package com.sap.scp.hotelreservations.service.impl;
 
 import com.sap.scp.hotelreservations.model.Booking;
-import com.sap.scp.hotelreservations.service.HotelBookingService;
+import com.sap.scp.hotelreservations.service.ReservationService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class HotelBookingServiceImpl implements HotelBookingService {
+public class ReservationServiceImpl implements ReservationService {
 
     private Integer roomSize;
     private Integer plannedDays;
     private Map<Integer, Booking> bookingsMap;
     private Map<Integer, Map<Integer, Integer>> roomBookings;
 
-    public HotelBookingServiceImpl(Integer roomSize, Integer plannedDays) {
+    public ReservationServiceImpl(Integer roomSize, Integer plannedDays) {
         this.roomSize = roomSize;
         this.plannedDays = plannedDays;
         this.bookingsMap = new HashMap<>();
         this.roomBookings = new HashMap<>();
     }
 
+    /**
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     @Override
     public Booking createBooking(Integer start, Integer end) {
         Booking booking = null;
@@ -50,7 +56,4 @@ public class HotelBookingServiceImpl implements HotelBookingService {
         return booking;
     }
 
-    public Integer getPlannedDays() {
-        return plannedDays;
-    }
 }
