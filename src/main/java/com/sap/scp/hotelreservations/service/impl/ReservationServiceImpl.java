@@ -1,5 +1,6 @@
 package com.sap.scp.hotelreservations.service.impl;
 
+import com.sap.scp.hotelreservations.exception.ValidationException;
 import com.sap.scp.hotelreservations.model.Booking;
 import com.sap.scp.hotelreservations.service.ReservationService;
 
@@ -8,6 +9,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import static com.sap.scp.hotelreservations.util.Validation.validateDates;
+import static com.sap.scp.hotelreservations.util.Validation.validateRoomSizePlannedDays;
+
 public class ReservationServiceImpl implements ReservationService {
 
     private Integer roomSize;
@@ -15,7 +19,8 @@ public class ReservationServiceImpl implements ReservationService {
     private Map<String, Booking> bookingsMap;
     private Map<Integer, Map<Integer, String>> roomBookings;
 
-    public ReservationServiceImpl(Integer roomSize, Integer plannedDays) {
+    public ReservationServiceImpl(Integer roomSize, Integer plannedDays) throws ValidationException {
+        validateRoomSizePlannedDays(roomSize, plannedDays);
         this.roomSize = roomSize;
         this.plannedDays = plannedDays;
         this.bookingsMap = new HashMap<>();
@@ -29,7 +34,9 @@ public class ReservationServiceImpl implements ReservationService {
      * @return Booking - details of the booking
      */
     @Override
-    public Booking createReservation(Integer start, Integer end) {
+    public Booking createReservation(Integer start, Integer end) throws ValidationException {
+
+        validateDates(start, end);
         Booking booking = null;
         for (int roomNo = 1; roomNo <= this.roomSize; roomNo++) {
             if (this.roomBookings.get(roomNo) == null) {
