@@ -6,28 +6,27 @@ import com.sap.scp.hotelreservations.service.ReservationService;
 import com.sap.scp.hotelreservations.service.impl.ReservationServiceImpl;
 
 import java.util.Scanner;
-import static com.sap.scp.hotelreservations.util.Validation.validateRoomSizePlannedDays;
 
 public class ReservationManager {
 
     /**
      * @return instance of ReservationService to create booking
      */
-    private ReservationService createResevationService() {
+    private ReservationService createResevationService(Scanner scanner) {
         ReservationService bookingService;
         int roomSize;
         int plannedDays;
         while (true) {
-            System.out.println("************* Please Create a Hotel : Enter hotelsize plannedDays e.g 5 31 ***********");
-            try (Scanner scanner = new Scanner(System.in)) {
+            try {
+                System.out.println("********* Please Create a Hotel : Enter hotelsize plannedDays e.g 3 20 *********");
                 String[] inputs = scanner.nextLine().split(" ");
                 roomSize = Integer.parseInt(inputs[0]);
                 plannedDays = Integer.parseInt(inputs[1]);
                 bookingService = new ReservationServiceImpl(roomSize, plannedDays);
-                System.out.println("************* Hotel Created !! Welcome to the  Hotel Reservation System ***********\n");
+                System.out.println("********* Hotel Created!! Welcome to the Hotel Reservation System *********\n");
                 break;
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
-                System.out.println("Invalid input. Enter the input in this format : hotelsize plannedDays e.g 5 31");
+                System.out.println("Invalid input. Enter the input in this format : hotelsize plannedDays e.g 3 365");
             } catch (ValidationException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -41,32 +40,35 @@ public class ReservationManager {
     public void startReservation() {
         int start;
         int end;
+        String[] dates;
         Booking booking;
-        ReservationService bookingService = createResevationService();
+        Scanner scanner = new Scanner(System.in);
+        ReservationService bookingService = createResevationService(scanner);
         String choice = "y";
-        while (choice.equalsIgnoreCase("y")) {
-            System.out.println("****** Please Enter StartDate, EndDate for Booking  e.g  0 3");
-            try (Scanner scanner = new Scanner(System.in)) {
-                String[] dates = scanner.nextLine().split(" ");
+        try {
+            while (choice.equalsIgnoreCase("y")) {
+                System.out.println("********* Please Enter StartDate, EndDate for Booking  e.g  0 3 *********");
+                dates = scanner.nextLine().split(" ");
                 start = Integer.parseInt(dates[0]);
                 end = Integer.parseInt(dates[1]);
                 booking = bookingService.createReservation(start, end);
-                if (booking != null) {
-                    System.out.println("*** Congrats Room Booked from date: " +booking.getStartDate()+" to Date: "+booking.getEndDate()+" ***");
-                    System.out.println("******* Room Number allocated : " + booking.getRoomNo() + " ***********");
-                }
-                else
-                    System.out.println("**** Sorry Request Declined!! Room is not available ******\n");
 
-                System.out.println("************* Want Another Booking  Y/N ***********");
+                if (booking != null)
+                    System.out.println("********* Congrats Room Number allocated : " + booking.getRoomNo() + " *********\n");
+                else
+                    System.out.println("********* Sorry Request Declined!! Room is not available *********\n");
+
+                System.out.println("********* Want Another Booking  Y/N *********");
                 choice = scanner.nextLine();
 
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
-                System.out.println("Invalid input. Enter the input in this format : start end e.g 0 3");
-            } catch (ValidationException ex) {
-                System.out.println("****** Sorry Request Declined!! ***********\n");
-                System.out.println(ex.getMessage());
             }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Invalid input. Enter the input in this format : start end e.g 0 3\n");
+        } catch (ValidationException ex) {
+            System.out.println("********* Sorry Request Declined!! *********\n");
+            System.out.println(ex.getMessage());
+        } finally {
+            scanner.close();
         }
 
     }

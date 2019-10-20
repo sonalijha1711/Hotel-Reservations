@@ -36,7 +36,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Booking createReservation(Integer start, Integer end) throws ValidationException {
 
-        validateDates(start, end);
+        validateDates(start, end,this.plannedDays);
         Booking booking = null;
         for (int roomNo = 1; roomNo <= this.roomSize; roomNo++) {
             if (this.roomBookings.get(roomNo) == null) {

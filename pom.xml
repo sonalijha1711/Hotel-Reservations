@@ -17,6 +17,21 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <configuration>
+                    <finalName>hotel-reservation</finalName>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.sap.scp.hotelreservations.application.Application</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+            </plugin>
         </plugins>
     </build>
     <dependencies>

@@ -128,7 +128,7 @@ public class ReservationServiceTest {
     //extra test cases to test booking info
     @Test
     public void testCreateReservationSuccess() {
-        reservationService= new ReservationServiceImpl(5,5);
+        reservationService= new ReservationServiceImpl(5,20);
 
         Booking firstBooking = reservationService.createReservation(0,5);
         Assert.assertNotNull(firstBooking);

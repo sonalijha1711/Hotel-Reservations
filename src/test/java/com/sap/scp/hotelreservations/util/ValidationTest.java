@@ -13,31 +13,31 @@ public class ValidationTest {
 
     @Test
     public void testvalidateStartEndDateSuccess() {
-        Assert.assertTrue(Validation.validateDates(5, 10));
-        Assert.assertTrue(Validation.validateDates(0, 5));
-        Assert.assertTrue(Validation.validateDates(10, 20));
-        Assert.assertTrue(Validation.validateDates(0, 364));
+        Assert.assertTrue(Validation.validateDates(5, 10,365));
+        Assert.assertTrue(Validation.validateDates(0, 5,365));
+        Assert.assertTrue(Validation.validateDates(10, 20,365));
+        Assert.assertTrue(Validation.validateDates(0, 50,365));
     }
 
     @Test
     public void testvalidateStartdDateBeforeEndDate() {
         expectedException.expect(ValidationException.class);
         expectedException.expectMessage("The start date should be before the end date");
-        Validation.validateDates(9, 5);
+        Validation.validateDates(9, 5,365);
     }
 
     @Test
     public void testvalidateEnddDateForMoreDays() {
         expectedException.expect(ValidationException.class);
         expectedException.expectMessage("The end date should be Integer value from 0 to 364");
-        Validation.validateDates(0, 366);
+        Validation.validateDates(0, 366,365);
     }
 
     @Test
     public void testvalidateNegativeStartDays() {
         expectedException.expect(ValidationException.class);
-        expectedException.expectMessage("The start date should be Integer value from 0 to 364");
-        Validation.validateDates(-2, 8);
+        expectedException.expectMessage("InValid Input :The start date should be Integer value from 0 to 364");
+        Validation.validateDates(-2, 8,365);
     }
 
     @Test
