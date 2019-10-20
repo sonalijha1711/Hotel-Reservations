@@ -5,14 +5,15 @@ import com.sap.scp.hotelreservations.service.ReservationService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 public class ReservationServiceImpl implements ReservationService {
 
     private Integer roomSize;
     private Integer plannedDays;
-    private Map<Integer, Booking> bookingsMap;
-    private Map<Integer, Map<Integer, Integer>> roomBookings;
+    private Map<String, Booking> bookingsMap;
+    private Map<Integer, Map<Integer, String>> roomBookings;
 
     public ReservationServiceImpl(Integer roomSize, Integer plannedDays) {
         this.roomSize = roomSize;
@@ -23,24 +24,24 @@ public class ReservationServiceImpl implements ReservationService {
 
     /**
      *
-     * @param start
-     * @param end
-     * @return
+     * @param start start date of the user for booking
+     * @param end end date of the user for booking
+     * @return Booking - details of the booking
      */
     @Override
-    public Booking createBooking(Integer start, Integer end) {
+    public Booking createReservation(Integer start, Integer end) {
         Booking booking = null;
         for (int roomNo = 1; roomNo <= this.roomSize; roomNo++) {
             if (this.roomBookings.get(roomNo) == null) {
-                Map<Integer, Integer> bookedDates = new HashMap<>();
-                booking = createBookingObj(start, end, roomNo, bookedDates);
+                Map<Integer, String> bookedDates = new HashMap<>();
+                booking = resrveDates(start, end, roomNo, bookedDates);
                 this.roomBookings.put(roomNo, bookedDates);
                 break;
             } else {
-                Map<Integer, Integer> bookedDates = this.roomBookings.get(roomNo);
+                Map<Integer, String> bookedDates = this.roomBookings.get(roomNo);
                 boolean accepted = IntStream.range(start, end + 1).allMatch(k -> bookedDates.get(k) == null);
                 if (accepted) {
-                    booking = createBookingObj(start, end, roomNo, bookedDates);
+                    booking = resrveDates(start, end, roomNo, bookedDates);
                     break;
                 }
             }
@@ -48,11 +49,11 @@ public class ReservationServiceImpl implements ReservationService {
         return booking;
     }
 
-    private Booking createBookingObj(Integer start, Integer end, int roomNo, Map<Integer, Integer> bookedDates) {
-
-        Booking booking = new Booking(1, start, end, roomNo, 1);
-        this.bookingsMap.put(1, booking);
-        IntStream.range(start, end + 1).forEach(j -> bookedDates.put(j, 1));
+    private Booking resrveDates(Integer start, Integer end, int roomNo, Map<Integer, String> bookedDates) {
+        String bookingid = UUID.randomUUID().toString();
+        Booking booking = new Booking(bookingid, start, end, roomNo, 1);
+        this.bookingsMap.put(bookingid , booking);
+        IntStream.range(start, end + 1).forEach(j -> bookedDates.put(j, bookingid));
         return booking;
     }
 

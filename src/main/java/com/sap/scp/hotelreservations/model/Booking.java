@@ -2,13 +2,13 @@ package com.sap.scp.hotelreservations.model;
 
 public class Booking {
 
-    private Integer bookingId;
+    private String bookingId;
     private Integer startDate;
     private Integer endDate;
     private Integer roomNo;
     private Integer userId;
 
-    public Booking(Integer bookingId, Integer startDate, Integer endDate, Integer roomNo, Integer userId) {
+    public Booking(String bookingId, Integer startDate, Integer endDate, Integer roomNo, Integer userId) {
         this.bookingId = bookingId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -16,7 +16,7 @@ public class Booking {
         this.userId = userId;
     }
 
-    public Integer getBookingId() {
+    public String  getBookingId() {
         return bookingId;
     }
 

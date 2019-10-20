@@ -4,6 +4,7 @@ import com.sap.scp.hotelreservations.exception.ValidationException;
 
 public class Validation {
 
+    private static int plannedDaysLimit = 365;
     /**
      * @param start
      * @param end
@@ -16,12 +17,12 @@ public class Validation {
             exceptionMsg.append("The start date should be before the end date" + "\n");
             isValid = false;
         }
-        if (start < 0) {
-            exceptionMsg.append("The start date should be 0 or later" + "\n");
+        if (start < 0|| start > plannedDaysLimit) {
+            exceptionMsg.append("The start date should be Integer value from 0 to 364 \n");
             isValid = false;
         }
-        if (end > 364) {
-            exceptionMsg.append("The end date should be " + 364 + " or earlier" + "\n");
+        if (end < 0 || end > plannedDaysLimit) {
+            exceptionMsg.append("The end date should be Integer value from 0 to 364 \n");
             isValid = false;
         }
         if (!isValid) {
@@ -41,7 +42,7 @@ public class Validation {
             exceptionMsg.append("The room size should be an Integer value between 1 to 1000" + "\n");
             isValid = false;
         }
-        if (plannedDays > 364 || plannedDays < 0) {
+        if (plannedDays >= plannedDaysLimit || plannedDays < 0) {
             exceptionMsg.append("The plannedDays of hotel should be an Integer value between 0 to 364" + "\n");
             isValid = false;
         }

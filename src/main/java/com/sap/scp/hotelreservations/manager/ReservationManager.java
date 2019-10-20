@@ -15,7 +15,7 @@ public class ReservationManager {
     /**
      * @return instance of ReservationService to create booking
      */
-    private ReservationService createHotelService() {
+    private ReservationService createResevationService() {
         ReservationService bookingService;
         int roomSize;
         int plannedDays;
@@ -44,11 +44,10 @@ public class ReservationManager {
      * Takes the input from user and book the reservation
      */
     public void startReservation() {
-
         int start;
         int end;
         Booking booking = null;
-        ReservationService bookingService = createHotelService();
+        ReservationService bookingService = createResevationService();
         String choice = "y";
         while (choice.equalsIgnoreCase("y")) {
             System.out.println("****** Please Enter StartDate, EndDate for Booking  e.g  0 3");
@@ -57,15 +56,17 @@ public class ReservationManager {
                 start = Integer.parseInt(dates[0]);
                 end = Integer.parseInt(dates[1]);
                 if (validateDates(start, end)) {
-                    booking = bookingService.createBooking(start, end);
+                    booking = bookingService.createReservation(start, end);
                 }
 
-                if (booking != null)
-                    System.out.println("************* Congratulations: Room Number allocated : " + booking.getRoomNo() + " ***********");
+                if (booking != null) {
+                    System.out.println("*** Congrats Room Booked from date: " +booking.getStartDate()+" to Date: "+booking.getEndDate()+" ***");
+                    System.out.println("******* Room Number allocated : " + booking.getRoomNo() + " ***********");
+                }
                 else
                     System.out.println("****** Sorry !! Room is not available ***********\n");
 
-                System.out.println("************* Want to Continue Booking  Y/N ***********");
+                System.out.println("************* Want Another Booking  Y/N ***********");
                 choice = scanner.nextLine();
 
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
